@@ -1,5 +1,7 @@
 /* global ZeroClipboard */
 
+const IS_FASTBOOT = typeof module !== 'undefined'
+
 function lookupFactory(app, name) {
   if (app.resolveRegistration) {
    return app.resolveRegistration(name);
@@ -12,7 +14,9 @@ export default {
   name: 'zeroclipboard',
 
   initialize: function(application) {
-    var config = lookupFactory(application, 'config:environment')['ember-zeroclipboard'];
-    if (config) { ZeroClipboard.config(config); }
+    if (!IS_FASTBOOT) {
+      var config = lookupFactory(application, 'config:environment')['ember-zeroclipboard'];
+      if (config) { ZeroClipboard.config(config); }
+    }
   }
 };
